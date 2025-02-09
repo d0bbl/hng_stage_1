@@ -183,7 +183,7 @@ $response = [
           checkPolarity($num)
         ],
         "digit_sum" => sumDigits($num_array),
-        "fun_fact" => $response_array[text]
+        "fun_fact" => $response_array['text']
     ];
     
 // Output JSON
