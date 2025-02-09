@@ -8,7 +8,7 @@ header('Access-Control-Allow-Origin: *');
 $name = isset($_GET['name']) ? htmlspecialchars($_GET['name']) : 'Guest'; */
 
 // Validate '$num' as a number
-if (isset($_GET['number']) && is_numeric($_GET['number'])) {
+if (isset($_GET['number']) && is_numeric($_GET['number']) && !is_nan((int)$_GET['number'])) {
     $num = intval($_GET['number']);
 } else {
          die(json_encode(["number" => http_response_code(400),
