@@ -83,56 +83,45 @@ header('Access-Control-Allow-Origin: *');
 
 // Validate '$num' as a number
 if (isset($_GET['number']) && is_numeric($_GET['number']) && !is_nan((int)$_GET['number'])) {
-    $num = intval($_GET['number']);
+    $raw_num = intval($_GET['number']);
 } elseif (!isset($_GET['number'])){
-  die(json_encode(["number" => "undefined",
-         "error" => "true"])); // Handle invalid input
+  die(json_encode(["number" => http_response_code(400),
+         "error" => true])); // Handle invalid input
 } else {
+         http_response_code(400);
          die(json_encode(["number" => $_GET['number'],
-         "error" => "true"])); // Handle invalid input
+         "error" => true])); // Handle invalid input
      }
      
 
-// Step 1: Convert the number to a string
-$num_str = (string)$num;
-
-// Step 2: Convert to array
-$num_array = array_map('intval', str_split($num_str));
-
-// Step 3: Count number of digits
-$count = strlen($num_str);
-
-//edge case helper
-function includes($num, $num_str, $chars) {
-    foreach ($chars as $char) {
-        if (str_contains($num_str, $char) !== false) {
-            return true;
-        }
-    }
-    return false;
-}
-
 //edge cases
-$decimal = ['.'];
-$minus = ['-'];
-
-//check for int
-if (includes($num, $num_str, $decimal)) {
-    $num = (int)round($num);
+// Handle negative numbers and decimals first
+if ($raw_num < 0) {
+    $abs_num = abs($raw_num);
+    $num_str = (string)$abs_num;  // Work with absolute value for processing
+} else {
+    $num_str = (string)$raw_num;
 }
 
-if (includes($num, $num_str, $minus)) {
-    $num = abs($num);
+// Check for decimal point (works for both positive and negative numbers)
+if (str_contains($num_str, '.')) {
+    $raw_num = (int)round($raw_num);  // Round before processing digits
+    $num_str = (string)abs($raw_num); // Update string with rounded absolute value
 }
+
+// Convert to array of integers (now safe from '-' and '.')
+$num_array = array_map('intval', str_split($num_str));
+$count = count($num_array);
+
 
 // Define the URL and parameters
-$url = "http://numbersapi.com/$num/math?json";
+$url = "http://numbersapi.com/$raw_num/math?json";
 
 $response = file_get_contents($url);
 
 if ($response === false) {
-    die (json_encode(["number" => "500",
-         "error" => "true"]));
+    die (json_encode(["number" =>    http_response_code(500),
+         "error" => true]));
 }
 
 $response_array = json_decode($response, true);
@@ -203,11 +192,11 @@ function checkPolarity($num) {
 }
 
 $response = [
-        "number" => $num,
-        "is_prime" => isPrime($num),
-        "is_perfect" => isPerfect($num),
-        "properties" => [...array_values(array_filter([checkArmstrong($num, $sum_total),
-          checkPolarity($num)]))
+        "number" => $raw_num,
+        "is_prime" => isPrime($raw_num),
+        "is_perfect" => isPerfect($raw_num),
+        "properties" => [...array_values(array_filter([checkArmstrong($raw_num, $sum_total),
+          checkPolarity($raw_num)]))
         ],
         "digit_sum" => sumDigits($num_array),
         "fun_fact" => $response_array['text']
