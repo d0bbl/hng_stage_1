@@ -243,6 +243,17 @@ echo json_encode($response);
 
 ---
 
+---
+
+## Project Structure
+
+your-php-project/
+├── api/
+│   └── classify-number/
+│       └── index.php      # PHP logic for the endpoint
+└── vercel.json            # Vercel deployment settings
+
+---
 
 ## Notes
 
