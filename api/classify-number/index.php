@@ -186,6 +186,9 @@ $response = [
         "fun_fact" => $response_array['text']
     ];
     
+  if ($response["properties"][0] == "") {
+    array_splice($response["properties"], 1, 0);
+  }
 // Output JSON
 echo json_encode($response);
 
