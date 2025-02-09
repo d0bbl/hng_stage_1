@@ -18,10 +18,6 @@ if (isset($_GET['number']) && is_numeric($_GET['number']) && !is_nan((int)$_GET[
          "error" => "true"])); // Handle invalid input
      }
      
-
-// Step 3: Count number of digits
-$count = strlen($num_str);
-
 //edge case helper
 function includes($num, $num_str,$chars) {
     foreach ($chars as $char) {
@@ -50,6 +46,10 @@ $num_str = (string)$abs_num;
 
 // Step 2: Convert to array
 $num_array = array_map('intval', str_split($num_str));
+
+// Step 3: Count number of digits
+$count = strlen($num_str);
+
 
 // Define the URL and parameters
 $url = "http://numbersapi.com/$num/math?json";
