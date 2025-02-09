@@ -9,7 +9,7 @@ header('Access-Control-Allow-Origin: *');
 if (isset($_GET['number']) && is_numeric($_GET['number']) && !is_nan((int)$_GET['number'])) {
     $num = intval($_GET['number']);
 } elseif (!isset($_GET['number'])){
-  die(json_encode(["number" => "",
+  die(json_encode(["number" => "undefined",
          "error" => "true"])); // Handle invalid input
 } else {
          die(json_encode(["number" => $_GET['number'],
@@ -46,9 +46,7 @@ if (includes($num, $num_str, $decimal)) {
 }
 
 if (includes($num, $num_str, $minus)) {
-   // $num = abs($num);
-   die(json_encode(["number" => $_GET['number'],
-         "error" => "true"])); // Handle negative input
+    $num = abs($num);
 }
 
 // Define the URL and parameters
