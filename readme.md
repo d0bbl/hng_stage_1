@@ -61,10 +61,10 @@ curl "https://hng-stage-1-flame.vercel.app/api/classify-number?number=371"
 ```json
 {
   "number": 371,
-  "prime_number": false,
-  "perfect_number": false,
-  "digit_sum": 11,
+  "is_prime": false,
+  "is_perfect": false,
   "properties": ["Armstrong", "odd"],
+  "digit_sum": 11,
   "fun_fact": "371 is an Armstrong number."
 }
 ```
@@ -84,8 +84,11 @@ header('Access-Control-Allow-Origin: *');
 // Validate '$num' as a number
 if (isset($_GET['number']) && is_numeric($_GET['number']) && !is_nan((int)$_GET['number'])) {
     $num = intval($_GET['number']);
+} elseif (!isset($_GET['number'])){
+  die(json_encode(["number" => "undefined",
+         "error" => "true"])); // Handle invalid input
 } else {
-         die(json_encode(["number" => 400,
+         die(json_encode(["number" => $_GET['number'],
          "error" => "true"])); // Handle invalid input
      }
      
@@ -100,7 +103,7 @@ $num_array = array_map('intval', str_split($num_str));
 $count = strlen($num_str);
 
 //edge case helper
-function includes($num, $num_str,$chars) {
+function includes($num, $num_str, $chars) {
     foreach ($chars as $char) {
         if (str_contains($num_str, $char) !== false) {
             return true;
@@ -128,7 +131,7 @@ $url = "http://numbersapi.com/$num/math?json";
 $response = file_get_contents($url);
 
 if ($response === false) {
-    die (json_encode(["number" => 500,
+    die (json_encode(["number" => "500",
          "error" => "true"]));
 }
 
@@ -187,7 +190,7 @@ function addArmstrongNum($num_array, $count) {
 $sum_total = addArmstrongNum($num_array, $count);
 
 function checkArmstrong($num, $sum_total) {
-  return ($num == $sum_total) ? "Armstrong": "";
+  return ($num == $sum_total) ? "armstrong": "";
 }
 
 function sumDigits($num_array) {
@@ -201,9 +204,8 @@ function checkPolarity($num) {
 
 $response = [
         "number" => $num,
-        "prime_number" => isPrime($num),
-        "perfect_number" => isPerfect($num),
-        "digit_sum" => sumDigits($num_array),
+        "is_prime" => isPrime($num),
+        "is_perfect" => isPerfect($num),
         "properties" => [...array_values(array_filter([checkArmstrong($num, $sum_total),
           checkPolarity($num)]))
         ],
@@ -215,6 +217,7 @@ $response = [
 echo json_encode($response);
 
 ?>
+
 ```
 
 ---
