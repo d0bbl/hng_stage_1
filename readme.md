@@ -6,7 +6,7 @@ This API retrieves mathematical properties of a number and a fun fact from **Num
 
 ## Endpoint
 
-`GET /api/classify-number?number={number}`
+`GET https://hng-stage-1-flame.vercel.app/api/classify-number?number=371`
 
 - **URL Parameter**:  
   `number` (required)  
@@ -43,7 +43,7 @@ This API retrieves mathematical properties of a number and a fun fact from **Num
 **Invalid Request** (e.g., non-numeric input):  
 ```json
 {
-  "number": "alphabet",
+  "number": "400",
   "error": true
 }
 ```
@@ -54,7 +54,7 @@ This API retrieves mathematical properties of a number and a fun fact from **Num
 
 ### Request
 ```bash
-curl "http://yourdomain.com/api/classify-number?number=371"
+curl "https://hng-stage-1-flame.vercel.app/api/classify-number?number=371"
 ```
 
 ### Response
@@ -80,14 +80,12 @@ curl "http://yourdomain.com/api/classify-number?number=371"
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 
-/* Check and sanitize 'name'
-$name = isset($_GET['name']) ? htmlspecialchars($_GET['name']) : 'Guest'; */
 
 // Validate '$num' as a number
-if (isset($_GET['number']) && is_numeric($_GET['number'])) {
+if (isset($_GET['number']) && is_numeric($_GET['number']) && !is_nan((int)$_GET['number'])) {
     $num = intval($_GET['number']);
 } else {
-         die(json_encode(["number" => "alphabet",
+         die(json_encode(["number" => 400,
          "error" => "true"])); // Handle invalid input
      }
      
@@ -103,7 +101,6 @@ $count = strlen($num_str);
 
 //edge case helper
 function includes($num, $num_str,$chars) {
-    //$numberStr = (string)$num;
     foreach ($chars as $char) {
         if (str_contains($num_str, $char) !== false) {
             return true;
@@ -116,19 +113,14 @@ function includes($num, $num_str,$chars) {
 $decimal = ['.'];
 $minus = ['-'];
 
-//apply helper for decimal and negative numbers
-if (!includes($num, $num_str, $minus) && !includes($num, $num_str, $decimal)) {
-  
-} elseif (includes($num, $num_str, $minus) && includes($num, $num_str, $decimal)) {
-  $num = intval((string)abs($num));
-  $num = (int)round($num);
-} elseif (includes($num, $num_str, $minus)) {
-// Remove the negative sign
-$num = intval((string)abs($num));
-} elseif (includes($num, $num_str,  $decimal)) {
-  $num = (int)round($num);
+//check for int
+if (includes($num, $num_str, $decimal)) {
+    $num = (int)round($num);
 }
 
+if (includes($num, $num_str, $minus)) {
+    $num = abs($num);
+}
 
 // Define the URL and parameters
 $url = "http://numbersapi.com/$num/math?json";
@@ -136,7 +128,7 @@ $url = "http://numbersapi.com/$num/math?json";
 $response = file_get_contents($url);
 
 if ($response === false) {
-    die (json_encode(["number" => http_response_code(500),
+    die (json_encode(["number" => 500,
          "error" => "true"]));
 }
 
@@ -145,15 +137,13 @@ $response_array = json_decode($response, true);
 
 //check for prime number
 function isPrime($num) {
-    if ($num < 2) {
+    if ($num < 2 || $num % 2 == 0) {
         return false;
     }
     if ($num == 2) {
         return true;
     }
-    if ($num % 2 == 0) {
-        return false;
-    }
+    
     $sqrt_num = sqrt($num);
     for ($i = 3; $i <= $sqrt_num; $i += 2) {
         if ($num % $i == 0) {
@@ -209,21 +199,21 @@ function checkPolarity($num) {
   return ($num % 2 == 0) ? "even" : "odd" ;
 }
 
-//build response
 $response = [
         "number" => $num,
         "prime_number" => isPrime($num),
         "perfect_number" => isPerfect($num),
         "digit_sum" => sumDigits($num_array),
-        "properties" => [ checkArmstrong($num, $sum_total),
-          checkPolarity($num)
+        "properties" => [...array_values(array_filter([checkArmstrong($num, $sum_total),
+          checkPolarity($num)]))
         ],
         "digit_sum" => sumDigits($num_array),
-        "fun_fact" => $response_array[text]
+        "fun_fact" => $response_array['text']
     ];
-    
+   
 // Output JSON
 echo json_encode($response);
+
 ?>
 ```
 

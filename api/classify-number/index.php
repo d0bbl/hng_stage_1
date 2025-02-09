@@ -9,7 +9,7 @@ header('Access-Control-Allow-Origin: *');
 if (isset($_GET['number']) && is_numeric($_GET['number']) && !is_nan((int)$_GET['number'])) {
     $num = intval($_GET['number']);
 } else {
-         die(json_encode(["number" => 400,
+         die(json_encode(["number" => "400",
          "error" => "true"])); // Handle invalid input
      }
      
@@ -52,7 +52,7 @@ $url = "http://numbersapi.com/$num/math?json";
 $response = file_get_contents($url);
 
 if ($response === false) {
-    die (json_encode(["number" => 500,
+    die (json_encode(["number" => "500",
          "error" => "true"]));
 }
 
@@ -111,7 +111,7 @@ function addArmstrongNum($num_array, $count) {
 $sum_total = addArmstrongNum($num_array, $count);
 
 function checkArmstrong($num, $sum_total) {
-  return ($num == $sum_total) ? "Armstrong": "";
+  return ($num == $sum_total) ? "armstrong": "";
 }
 
 function sumDigits($num_array) {
@@ -125,8 +125,8 @@ function checkPolarity($num) {
 
 $response = [
         "number" => $num,
-        "prime_number" => isPrime($num),
-        "perfect_number" => isPerfect($num),
+        "is_prime" => isPrime($num),
+        "is_perfect" => isPerfect($num),
         "digit_sum" => sumDigits($num_array),
         "properties" => [...array_values(array_filter([checkArmstrong($num, $sum_total),
           checkPolarity($num)]))
