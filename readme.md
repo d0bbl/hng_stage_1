@@ -19,10 +19,10 @@ This API retrieves mathematical properties of a number and a fun fact from **Num
 ```json
 {
   "number": 371,
-  "prime_number": false,
-  "perfect_number": false,
-  "digit_sum": 11,
+  "is_prime": false,
+  "is_perfect": false,
   "properties": ["Armstrong", "odd"],
+  "digit_sum": 11,
   "fun_fact": "371 is an Armstrong number"
 }
 ```
@@ -30,10 +30,10 @@ This API retrieves mathematical properties of a number and a fun fact from **Num
 | Field           | Description                                                                 |
 |-----------------|-----------------------------------------------------------------------------|
 | `number`        | The input number.                                                           |
-| `prime_number`  | `true` if the number is prime, `false` otherwise.                           |
-| `perfect_number`| `true` if the number is a perfect number, `false` otherwise.                |
+| `is_prime`  | `true` if the number is prime, `false` otherwise.                           |
+| `is_perfect`| `true` if the number is a perfect number, `false` otherwise.  
+| `properties`    | Array of properties like `"Armstrong"`, `"even"`, `"odd"`, etc.           
 | `digit_sum`     | Sum of the digits of the number (e.g., `3 + 7 + 1 = 11`).                   |
-| `properties`    | Array of properties like `"Armstrong"`, `"even"`, `"odd"`, etc.             |
 | `fun_fact`      | Fun fact from [NumbersAPI](http://numbersapi.com).                          |
 
 ---
