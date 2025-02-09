@@ -11,7 +11,7 @@ $name = isset($_GET['name']) ? htmlspecialchars($_GET['name']) : 'Guest'; */
 if (isset($_GET['number']) && is_numeric($_GET['number'])) {
     $num = intval($_GET['number']);
 } else {
-         die(json_encode(["number" => "alphabet",
+         die(json_encode(["number" => http_response_code(),
          "error" => "true"])); // Handle invalid input
      }
      
