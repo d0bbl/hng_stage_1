@@ -18,38 +18,25 @@ if (isset($_GET['number']) && is_numeric($_GET['number']) && !is_nan((int)$_GET[
          "error" => "true"])); // Handle invalid input
      }
      
-//edge case helper
-function includes($num, $num_str,$chars) {
-    foreach ($chars as $char) {
-        if (str_contains($num_str, $char) !== false) {
-            return true;
-        }
-    }
-    return false;
-}
 
 //edge cases
-$decimal = ['.'];
-$minus = ['-'];
-
-//check for int
-if (includes($raw_num, $num_str, $decimal)) {
-    $raw_num = (int)round($raw_num);
-}
-
-if (includes($raw_num, $num_str, $minus)) {
+// Handle negative numbers and decimals first
+if ($raw_num < 0) {
     $abs_num = abs($raw_num);
-    $num_str = (string)$abs_num;
+    $num_str = (string)$abs_num;  // Work with absolute value for processing
+} else {
+    $num_str = (string)$raw_num;
 }
 
-// Step 1: Convert the number to a string
-$num_str = (string)$raw_num;
+// Check for decimal point (works for both positive and negative numbers)
+if (str_contains($num_str, '.')) {
+    $raw_num = (int)round($raw_num);  // Round before processing digits
+    $num_str = (string)abs($raw_num); // Update string with rounded absolute value
+}
 
-// Step 2: Convert to array
+// Convert to array of integers (now safe from '-' and '.')
 $num_array = array_map('intval', str_split($num_str));
-
-// Step 3: Count number of digits
-$count = strlen($num_str);
+$count = count($num_array);
 
 
 // Define the URL and parameters
