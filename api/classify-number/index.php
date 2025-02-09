@@ -25,7 +25,6 @@ $count = strlen($num_str);
 
 //edge case helper
 function includes($num, $num_str,$chars) {
-    //$numberStr = (string)$num;
     foreach ($chars as $char) {
         if (str_contains($num_str, $char) !== false) {
             return true;
@@ -39,16 +38,12 @@ $decimal = ['.'];
 $minus = ['-'];
 
 //check for int
-if (!includes($num, $num_str, $minus) && !includes($num, $num_str, $decimal)) {
-  
-} elseif (includes($num, $num_str, $minus) && includes($num, $num_str, $decimal)) {
-  $num = intval((string)abs($num));
-  $num = (int)round($num);
-} elseif (includes($num, $num_str, $minus)) {
-// Remove the negative sign
-$num = intval((string)abs($num));
-} elseif (includes($num, $num_str,  $decimal)) {
-  $num = (int)round($num);
+if (includes($num, $num_str, $decimal)) {
+    $num = (int)round($num);
+}
+
+if (includes($num, $num_str, $minus)) {
+    $num = abs($num);
 }
 
 // Define the URL and parameters
