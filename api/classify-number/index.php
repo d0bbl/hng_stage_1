@@ -11,11 +11,11 @@ if (isset($_GET['number']) && is_numeric($_GET['number']) && !is_nan((int)$_GET[
 } elseif (!isset($_GET['number'])){
   http_response_code(400);
   die(json_encode(["number" => "undefined",
-         "error" => "true"])); // Handle invalid input
+         "error" => true])); // Handle invalid input
 } else {
          http_response_code(400);
          die(json_encode(["number" => $_GET['number'],
-         "error" => "true"])); // Handle invalid input
+         "error" => true])); // Handle invalid input
      }
      
 
@@ -47,7 +47,7 @@ $response = file_get_contents($url);
 if ($response === false) {
     http_response_code(500);
     die (json_encode(["number" => "500",
-         "error" => "true"]));
+         "error" => true]));
 }
 
 $response_array = json_decode($response, true);
