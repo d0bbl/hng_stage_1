@@ -247,11 +247,13 @@ echo json_encode($response);
 
 ## Project Structure
 
+```plaintext
 your-php-project/
 ├── api/
 │   └── classify-number/
 │       └── index.php      # PHP logic for the endpoint
 └── vercel.json            # Vercel deployment settings
+```
 
 ---
 
