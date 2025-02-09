@@ -11,7 +11,7 @@ $name = isset($_GET['name']) ? htmlspecialchars($_GET['name']) : 'Guest'; */
 if (isset($_GET['number']) && is_numeric($_GET['number']) && !is_nan((int)$_GET['number'])) {
     $num = intval($_GET['number']);
 } else {
-         die(json_encode(["number" => http_response_code(400),
+         die(json_encode(["number" => 400,
          "error" => "true"])); // Handle invalid input
      }
      
@@ -82,7 +82,7 @@ if ($numbers_api_response === false) {
 $response = file_get_contents($url);
 
 if ($response === false) {
-    die (json_encode(["number" => http_response_code(500),
+    die (json_encode(["number" => 500,
          "error" => "true"]));
 }
 
