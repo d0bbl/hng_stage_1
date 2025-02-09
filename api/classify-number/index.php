@@ -179,19 +179,13 @@ $response = [
         "prime_number" => isPrime($num),
         "perfect_number" => isPerfect($num),
         "digit_sum" => sumDigits($num_array),
-        "properties" => [ checkArmstrong($num, $sum_total),
-          checkPolarity($num)
+        "properties" => [...array_values(array_filter([checkArmstrong($num, $sum_total),
+          checkPolarity($num)]))
         ],
         "digit_sum" => sumDigits($num_array),
         "fun_fact" => $response_array['text']
     ];
-    
-    $response["properties"] = array_filter([
-    checkArmstrong($num, 
-    $sum_total),
-    checkPolarity($num)
-    ]);
-    
+   
 // Output JSON
 echo json_encode($response);
 
