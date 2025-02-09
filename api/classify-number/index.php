@@ -175,7 +175,7 @@ function checkPolarity($num) {
 }
 
 $response = [
-        "num" => $num,
+        "number" => $num,
         "prime_number" => isPrime($num),
         "perfect_number" => isPerfect($num),
         "digit_sum" => sumDigits($num_array),
