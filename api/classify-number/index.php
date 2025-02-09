@@ -39,10 +39,11 @@ if (includes($raw_num, $num_str, $decimal)) {
 
 if (includes($raw_num, $num_str, $minus)) {
     $abs_num = abs($raw_num);
+    $num_str = (string)$abs_num;
 }
 
 // Step 1: Convert the number to a string
-$num_str = (string)$abs_num;
+$num_str = (string)$raw_num;
 
 // Step 2: Convert to array
 $num_array = array_map('intval', str_split($num_str));
@@ -52,7 +53,7 @@ $count = strlen($num_str);
 
 
 // Define the URL and parameters
-$url = "http://numbersapi.com/$num/math?json";
+$url = "http://numbersapi.com/$raw_num/math?json";
 
 $response = file_get_contents($url);
 
