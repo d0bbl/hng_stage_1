@@ -59,8 +59,9 @@ $num = intval((string)abs($num));
 }
 
 // Define the URL and parameters
-$url = "http://numbersapi.com/$num/math";
+$url = "http://numbersapi.com/$num/math?json";
 
+/*
 // Initialize cURL
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, $url);
@@ -76,7 +77,17 @@ if ($numbers_api_response === false) {
     $error = curl_error($ch);
     die("cURL Error: " . $error);
 }
+*/
 
+$numbers_api_response = file_get_contents($url);
+
+if ($numbers_api_response === false) {
+    die (json_encode(["number" => http_response_code(500),
+         "error" => "true"]));
+}
+
+
+/*
 // Get HTTP status code
 $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 if ($httpCode !== 200) {
@@ -87,6 +98,7 @@ if ($httpCode !== 200) {
 
 // Close the session
 curl_close($ch);
+*/
 
 /* Process the response (e.g., JSON decode)
 $data = json_decode($response, true);
