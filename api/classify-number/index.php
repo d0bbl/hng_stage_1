@@ -187,7 +187,7 @@ $response = [
     ];
     
   if ($response["properties"][0] == "") {
-    array_splice($response["properties"], 1, 0);
+    unset($response["properties"]);
   }
 // Output JSON
 echo json_encode($response);
