@@ -79,13 +79,14 @@ if ($numbers_api_response === false) {
 }
 */
 
-$numbers_api_response = file_get_contents($url);
+$response = file_get_contents($url);
 
-if ($numbers_api_response === false) {
+if ($response === false) {
     die (json_encode(["number" => http_response_code(500),
          "error" => "true"]));
 }
 
+$response_array = json_decode($response, true);
 
 /*
 // Get HTTP status code
@@ -174,6 +175,7 @@ function checkPolarity($num) {
 }
 
 $response = [
+        "num" => $num,
         "prime_number" => isPrime($num),
         "perfect_number" => isPerfect($num),
         "digit_sum" => sumDigits($num_array),
@@ -181,7 +183,7 @@ $response = [
           checkPolarity($num)
         ],
         "digit_sum" => sumDigits($num_array),
-        "fun_fact" => $numbers_api_response
+        "fun_fact" => $response_array[text]
     ];
     
 // Output JSON
