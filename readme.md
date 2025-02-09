@@ -131,31 +131,16 @@ $num = intval((string)abs($num));
 
 
 // Define the URL and parameters
-$url = "http://numbersapi.com/$num/math";
+$url = "http://numbersapi.com/$num/math?json";
 
-// Initialize cURL
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, $url);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = file_get_contents($url);
 
-curl_setopt($ch, CURLOPT_HTTPHEADER, ['Accept: application/json']);
-
-$numbers_api_response = curl_exec($ch);
-
-// Check for cURL errors
-if ($numbers_api_response === false) {
-    $error = curl_error($ch);
-    die("cURL Error: " . $error);
+if ($response === false) {
+    die (json_encode(["number" => http_response_code(500),
+         "error" => "true"]));
 }
 
-// Get HTTP status code
-$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-if ($httpCode !== 200) {
-    die("HTTP Error: Status Code " . $httpCode);
-}
-
-// Close the session
-curl_close($ch);
+$response_array = json_decode($response, true);
 
 
 //check for prime number
@@ -226,6 +211,7 @@ function checkPolarity($num) {
 
 //build response
 $response = [
+        "number" => $num,
         "prime_number" => isPrime($num),
         "perfect_number" => isPerfect($num),
         "digit_sum" => sumDigits($num_array),
@@ -233,7 +219,7 @@ $response = [
           checkPolarity($num)
         ],
         "digit_sum" => sumDigits($num_array),
-        "fun_fact" => $numbers_api_response
+        "fun_fact" => $response_array[text]
     ];
     
 // Output JSON
