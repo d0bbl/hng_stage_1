@@ -9,8 +9,7 @@ header('Access-Control-Allow-Origin: *');
 if (isset($_GET['number']) && is_numeric($_GET['number']) && !is_nan((int)$_GET['number'])) {
     $raw_num = intval($_GET['number']);
 } elseif (!isset($_GET['number'])){
-  http_response_code(400);
-  die(json_encode(["number" => "undefined",
+  die(json_encode(["number" => http_response_code(400),
          "error" => true])); // Handle invalid input
 } else {
          http_response_code(400);
@@ -45,8 +44,7 @@ $url = "http://numbersapi.com/$raw_num/math?json";
 $response = file_get_contents($url);
 
 if ($response === false) {
-    http_response_code(500);
-    die (json_encode(["number" => "500",
+    die (json_encode(["number" =>    http_response_code(500),
          "error" => true]));
 }
 
