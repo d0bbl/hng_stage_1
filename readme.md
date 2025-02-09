@@ -6,11 +6,11 @@ This API retrieves mathematical properties of a number and a fun fact from **Num
 
 ## Endpoint
 
-`GET /api.php?number={number}`
+`GET /api/classify-number?number={number}`
 
 - **URL Parameter**:  
-  `number` (integer, required)  
-  Example: `/api.php?number=371`
+  `number` (required)  
+  Example: `/api/classify-number?number=371`
 
 ---
 
@@ -40,7 +40,7 @@ This API retrieves mathematical properties of a number and a fun fact from **Num
 
 ## Error Handling
 
-**Invalid Request** (e.g., non-integer input):  
+**Invalid Request** (e.g., non-numeric input):  
 ```json
 {
   "number": "alphabet",
@@ -54,7 +54,7 @@ This API retrieves mathematical properties of a number and a fun fact from **Num
 
 ### Request
 ```bash
-curl "http://yourdomain.com/api.php?number=371"
+curl "http://yourdomain.com/api/classify-number?number=371"
 ```
 
 ### Response
