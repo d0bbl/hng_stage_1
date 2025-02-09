@@ -127,7 +127,6 @@ $response = [
         "number" => $num,
         "is_prime" => isPrime($num),
         "is_perfect" => isPerfect($num),
-        "digit_sum" => sumDigits($num_array),
         "properties" => [...array_values(array_filter([checkArmstrong($num, $sum_total),
           checkPolarity($num)]))
         ],
