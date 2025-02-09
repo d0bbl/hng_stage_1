@@ -9,7 +9,7 @@ header('Access-Control-Allow-Origin: *');
 if (isset($_GET['number']) && is_numeric($_GET['number']) && !is_nan((int)$_GET['number'])) {
     $num = intval($_GET['number']);
 } elseif (!isset($_GET['number'])){
-  die(json_encode(["number" => "undefined",
+  die(json_encode(["number" => "alphabet",
          "error" => "true"])); // Handle invalid input
 } else {
          die(json_encode(["number" => $_GET['number'],
