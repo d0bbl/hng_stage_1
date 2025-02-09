@@ -4,8 +4,6 @@
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 
-/* Check and sanitize 'name'
-$name = isset($_GET['name']) ? htmlspecialchars($_GET['name']) : 'Guest'; */
 
 // Validate '$num' as a number
 if (isset($_GET['number']) && is_numeric($_GET['number']) && !is_nan((int)$_GET['number'])) {
@@ -22,13 +20,8 @@ $num_str = (string)$num;
 // Step 2: Convert to array
 $num_array = array_map('intval', str_split($num_str));
 
-//echo json_encode($num_array);
-
 // Step 3: Count number of digits
 $count = strlen($num_str);
-
-//termux check
-//echo $count;
 
 //edge case helper
 function includes($num, $num_str,$chars) {
@@ -61,24 +54,6 @@ $num = intval((string)abs($num));
 // Define the URL and parameters
 $url = "http://numbersapi.com/$num/math?json";
 
-/*
-// Initialize cURL
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, $url);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-curl_setopt($ch, CURLOPT_HTTPHEADER, ['Accept: application/json']);
-
-$numbers_api_response = curl_exec($ch);
-
-// Check for errors
-if ($numbers_api_response === false) {
-    //termux output
-    $error = curl_error($ch);
-    die("cURL Error: " . $error);
-}
-*/
-
 $response = file_get_contents($url);
 
 if ($response === false) {
@@ -88,35 +63,16 @@ if ($response === false) {
 
 $response_array = json_decode($response, true);
 
-/*
-// Get HTTP status code
-$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-if ($httpCode !== 200) {
-  //termux check
-   // echo("httpcode not 200");
-    die("HTTP Error: Status Code " . $httpCode);
-}
-
-// Close the session
-curl_close($ch);
-*/
-
-/* Process the response (e.g., JSON decode)
-$data = json_decode($response, true);
-print_r($data); */
-
 
 //check for prime number
 function isPrime($num) {
-    if ($num < 2) {
+    if ($num < 2 || $num % 2 == 0) {
         return false;
     }
     if ($num == 2) {
         return true;
     }
-    if ($num % 2 == 0) {
-        return false;
-    }
+    
     $sqrt_num = sqrt($num);
     for ($i = 3; $i <= $sqrt_num; $i += 2) {
         if ($num % $i == 0) {
@@ -154,8 +110,6 @@ function addArmstrongNum($num_array, $count) {
     $init_sum = $num_array[$i] ** $count;
      $total_sum += $init_sum; 
   }
-  //termux check
-  //echo $total_sum;
   return $total_sum;
 }
 
